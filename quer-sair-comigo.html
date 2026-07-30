@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quer sair comigo?</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    max-width: 420px;
+    width: 90%;
+    position: relative;
+  }
+
+  h1 {
+    color: #e63980;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .emoji {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    animation: pulse 1.2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  .botoes {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    height: 60px;
+  }
+
+  button {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  #btnSim {
+    background: #4caf50;
+    color: white;
+  }
+
+  #btnSim:hover {
+    transform: scale(1.08);
+  }
+
+  #btnNao {
+    background: #f44336;
+    color: white;
+    position: fixed;
+    z-index: 999;
+  }
+
+  #resultado {
+    margin-top: 25px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #e63980;
+    min-height: 30px;
+  }
+
+  .coracoes {
+    position: fixed;
+    top: -50px;
+    font-size: 1.5rem;
+    animation: cair linear forwards;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes cair {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0.3;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="emoji">💘</div>
+  <h1>Quer sair comigo?</h1>
+  <div class="botoes">
+    <button id="btnSim" onclick="mostrarResultado()">SIM</button>
+    <button id="btnNao">NÃO</button>
+  </div>
+  <div id="resultado"></div>
+</div>
+
+<script>
+  const btnNao = document.getElementById('btnNao');
+  const card = document.querySelector('.card');
+
+  function moverBotao() {
+    const margem = 20;
+    const larguraJanela = window.innerWidth;
+    const alturaJanela = window.innerHeight;
+    const larguraBotao = btnNao.offsetWidth;
+    const alturaBotao = btnNao.offsetHeight;
+
+    const maxX = larguraJanela - larguraBotao - margem;
+    const maxY = alturaJanela - alturaBotao - margem;
+
+    const novoX = Math.random() * (maxX - margem) + margem;
+    const novoY = Math.random() * (maxY - margem) + margem;
+
+    btnNao.style.left = novoX + 'px';
+    btnNao.style.top = novoY + 'px';
+  }
+
+  // Posição inicial do botão Não dentro do fluxo, depois passa a fugir
+  btnNao.addEventListener('mouseover', moverBotao);
+  btnNao.addEventListener('click', moverBotao);
+  btnNao.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    moverBotao();
+  });
+
+  function mostrarResultado() {
+    document.getElementById('resultado').innerText = "Ela(e) disse SIM! 🎉❤️";
+    for (let i = 0; i < 30; i++) {
+      criarCoracao();
+    }
+  }
+
+  function criarCoracao() {
+    const coracao = document.createElement('div');
+    coracao.className = 'coracoes';
+    coracao.innerText = ['❤️','💖','💕','💗'][Math.floor(Math.random()*4)];
+    coracao.style.left = Math.random() * window.innerWidth + 'px';
+    const duracao = 2 + Math.random() * 2;
+    coracao.style.animationDuration = duracao + 's';
+    document.body.appendChild(coracao);
+    setTimeout(() => coracao.remove(), duracao * 1000);
+  }
+</script>
+
+</body>
+</html>
